@@ -7,7 +7,7 @@
 # https://learnxinyminutes.com/docs/yaml/
 
 title: Vinicius Viena Data Science Blog.
-description: Welcome! This is my webpage showing few of my latest and more relevant Data Science projects.
+description: This is my webpage showing few of my latest and more relevant Data Science projects.
 github_username: viniviena
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "ds-blog"
@@ -43,7 +43,7 @@ minima:
     github: 
 
 # Set this to true to get LaTeX math equation support
-use_math: true
+use_math:
 
 # Set this to true to display the summary of your blog post under your title on the Home page.
 show_description: true
