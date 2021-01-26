@@ -4,8 +4,12 @@ title: About Me
 permalink: /about/
 ---
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+<style>
+td {
+  font-size: 20px
+}
+</style>
+
+I'm Vinicius Viena, Chemical Engineer and last-year Industrial Engineerig student at Universidade Federal da Bahia. I'm passionate about code and technology. I enjoy solving challenging problems with code and hope to spread this passion.
 
 
-
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
