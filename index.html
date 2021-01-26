@@ -83,7 +83,16 @@ window.onload = wrap_img;
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home"><p><img src="/ds-blog/images/Cover_best.png" alt="" /></p>
+        <div class="home"><!--![](/ds-blog/images/Cover_best.png) -->
+
+<style>
+      body {
+        background-image: ![](/ds-blog/images/Cover_best.png);
+        background-size: 30% 100%;
+        background-repeat: no-repeat;
+        color:#cccccc;
+      }
+</style>
 
 <p style="font-size: 16px;"> This site is my personal blog for hosting my research projects. In case you are asking yourself what is process systems engineering (PSE): It is branch of industrial engineering and a interdisciplinary field. It covers process design, system modeling and simulation, dynamics and control, process analytics, optimization, and economic. Here I will provide code (mostly Python) for solving traditional machine learning problems and machine learning applied to PSE. I hope you enjoy the visit and find something useful for your own creations. </p>
 
