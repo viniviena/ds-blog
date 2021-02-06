@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Answer Business Questions with Data Science - SQL case study | Vinicius Viena</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Answer Business Questions with Data Science - SQL case study" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using SQLite" />
+<meta property="og:description" content="Using SQLite" />
+<link rel="canonical" href="https://viniviena.github.io/ds-blog/sql/business/2021/01/26/SQL-Skills.html" />
+<meta property="og:url" content="https://viniviena.github.io/ds-blog/sql/business/2021/01/26/SQL-Skills.html" />
+<meta property="og:site_name" content="Vinicius Viena" />
+<meta property="og:image" content="https://viniviena.github.io/ds-blog/images/SQL.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-26T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://viniviena.github.io/ds-blog/sql/business/2021/01/26/SQL-Skills.html","@type":"BlogPosting","headline":"Answer Business Questions with Data Science - SQL case study","dateModified":"2021-01-26T00:00:00-06:00","datePublished":"2021-01-26T00:00:00-06:00","image":"https://viniviena.github.io/ds-blog/images/SQL.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://viniviena.github.io/ds-blog/sql/business/2021/01/26/SQL-Skills.html"},"description":"Using SQLite","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/ds-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://viniviena.github.io/ds-blog/feed.xml" title="Vinicius Viena" /><link rel="shortcut icon" type="image/x-icon" href="/ds-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" /><script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/ds-blog/">Vinicius Viena</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/ds-blog/about/">About Me</a><a class="page-link" href="/ds-blog/search/">Search</a><a class="page-link" href="/ds-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Answer Business Questions with Data Science - SQL case study</h1><p class="page-description">Using SQLite</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-26T00:00:00-06:00" itemprop="datePublished">
+        Jan 26, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/ds-blog/categories/#SQL">SQL</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/ds-blog/categories/#business">business</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/viniviena/ds-blog/tree/master/_notebooks/2021-01-26-SQL-Skills.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/ds-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/viniviena/ds-blog/master?filepath=_notebooks%2F2021-01-26-SQL-Skills.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ds-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/viniviena/ds-blog/blob/master/_notebooks/2021-01-26-SQL-Skills.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ds-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#1.-Introduction">1. Introduction </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#1.1.-Problem-Definition">1.1. Problem Definition </a></li>
+<li class="toc-entry toc-h2"><a href="#1.2.-Solution-Strategy">1.2. Solution Strategy </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#The-Data-Base">The Data Base </a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#2.-Solution-implementation">2. Solution implementation </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#2.1.-Importing-modules">2.1. Importing modules </a></li>
+<li class="toc-entry toc-h2"><a href="#2.2.-Creating-support-functions">2.2. Creating support functions </a></li>
+<li class="toc-entry toc-h2"><a href="#3.-Answering-our-question.">3. Answering our question. </a></li>
+<li class="toc-entry toc-h2"><a href="#Conclusions">Conclusions </a></li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-26-SQL-Skills.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="1.-Introduction">
+<a class="anchor" href="#1.-Introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Introduction<a class="anchor-link" href="#1.-Introduction"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1.1.-Problem-Definition">
+<a class="anchor" href="#1.1.-Problem-Definition" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1. Problem Definition<a class="anchor-link" href="#1.1.-Problem-Definition"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One of the most often ignored part of any data science project is defining which problem your code implementation is trying to solve. In engineering college I was trained to solve problems which were already framed for me – my task was just using a set of constrained manipulations to find the variable that was missing.</p>
+<p>In real life, problems does not appear in such organized manner. They are generally a fuzzy collection of useful and useless information on which we need to reflect upon and include what is important and exclude what is not.</p>
+<p>Here, I will define the term <strong>problem</strong> as an offset between a <em>present state</em> and a <em>desired state</em>. What we do to go from a current to a desired state is the problem solution! The technology employed to solve the problem may vary depending on how you frame it and which solution path you choose.</p>
+<p>Next I will provide the context for the problem we will solve and derive a simple statement from it (simple subject + action verb + object). Than we can go from a broad description to a statement with a call for action:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Context:</strong> Suppose you are working on a digital media record store that sells tracks and entire albuns of several artists and music genres across several countries of the world. Supposing the record stores has made a deal with a record label. They claim that they have <strong>FOUR INCREDIBLE ALBUNS</strong> that will make a huge success in the <strong>USA</strong> and want to advertise them. However, we can only include three of them in the Store. These albuns are from four distinct genres which are already found in several tracks in our digital store - <strong>'Hip Hop/Rap','Alternative &amp; Punk','Pop','Blues'</strong></p>
+<p><strong>Problem statement:</strong> Select 3 out of 4 possible albuns to include in the digital store.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1.2.-Solution-Strategy">
+<a class="anchor" href="#1.2.-Solution-Strategy" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2. Solution Strategy<a class="anchor-link" href="#1.2.-Solution-Strategy"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you may noticed, there are several ways I can select 3 out of 4 albuns – each will recquire a certain amount of resources (time, technology). Let's assess them in this terms:</p>
+<ol>
+<li>
+<p>Write the genres on pieces of paper, put them in a box, and draw 3 of them randomly - <strong>Resources: low, Results: Probably poor</strong>.</p>
+</li>
+<li>
+<p>Try assigning a meaningful metric to each possible triplet of albuns and maximize/minimize it. <strong>Resources: medium, Results: ok</strong>.</p>
+</li>
+</ol>
+<p>Here I will choose the 2nd option since Data Science is about answering questions based on data and not lucky! Hopefully, this approach is better than pure chance.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-Data-Base">
+<a class="anchor" href="#The-Data-Base" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Data Base<a class="anchor-link" href="#The-Data-Base"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The data base used is this analysis is the <a href="https://github.com/lerocha/chinook-database/blob/master/README.md">Chinook</a> data model which represents a digital media store, including tables for artists, albums, media tracks, invoices and customers. A copy of the database schema is displayed below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="https://raw.githubusercontent.com/viniviena/repositoryname/master/Chinook.png" alt="chinook"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To implement the 2nd option we need a metric to assign for each triplet. In the database, we have few information we can use. Basically we want our choice to maximize the chance that the selected albuns will be sold as much as the ones we already have in our store. There are two words to pay attention: <strong>"chance"</strong> and <strong>"will be sold"</strong>.</p>
+<p>Chances triggers my mind to probability and counting - maybe using genre popularity is a way. About the the verb form "will be sold". It is too vague - when we talk about the future it is desirable to set a time frame (1 one month, pi years, 3.74 years).</p>
+<p>As you may noticed, the database schema does not provide any time-related information about the invoices, albuns or artists. This could be valuable for deciding if something will be succesful in a near future. Even so, we can still use available information to guide our decision.</p>
+<p>If you notice, only one attribute of this new album was provided - their genre. We know that music has much more attributes than its genre - I know several artists that play songs from the same genre but sounds quite different. Even so, lets use what we have.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One approach to solve this problem is collecting information about the <strong>popularity</strong> or <strong>total sales</strong> of those genres in our store and pick the triplet which has the highest popularity.</p>
+<p>This may seem a little biased since popularity vary over time and by lumping everything we can draw bad conclusions. However, this is the information we have at hand. <strong>Here I'll use the total sales since it is correlated with popularity but it is easier to interpret and it is what guide any company (profit)</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Finally, we will choose 3 albuns for which the sum of total sales is maximized.</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="2.-Solution-implementation">
+<a class="anchor" href="#2.-Solution-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Solution implementation<a class="anchor-link" href="#2.-Solution-implementation"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.1.-Importing-modules">
+<a class="anchor" href="#2.1.-Importing-modules" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.1. Importing modules<a class="anchor-link" href="#2.1.-Importing-modules"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span> <span class="k">as</span> <span class="nn">sql</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.2.-Creating-support-functions">
+<a class="anchor" href="#2.2.-Creating-support-functions" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.2. Creating support functions<a class="anchor-link" href="#2.2.-Creating-support-functions"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ol>
+<li>
+<p><code>run_query()</code> - takes a SQL query as argument and returns a panda dataframe contaning the correspondent data.</p>
+</li>
+<li>
+<p><code>run_command()</code> - takes a SQL command and execute using sqlite module.</p>
+</li>
+<li>
+<p><code>show_tables()</code> - Function that calls run_query() function to return a list of all tables and views in the database.</p>
+</li>
+</ol>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Function 1 runquery</span>
+<span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">sql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'chinook.db'</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+    
+<span class="c1">#Function 2 run_command    </span>
+<span class="k">def</span> <span class="nf">run_command</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">sql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">'chinook.db'</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">isolation_level</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        
+<span class="c1">#Function 3 show_tables</span>
+
+<span class="k">def</span> <span class="nf">show_tables</span><span class="p">():</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">    SELECT</span>
+<span class="s1">        name,</span>
+<span class="s1">        type</span>
+<span class="s1">    FROM sqlite_master</span>
+<span class="s1">    WHERE type IN ("table","view");</span>
+<span class="s1">    '''</span>
+    <span class="k">return</span> <span class="n">run_query</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">show_tables</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>album</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>artist</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>customer</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>employee</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>genre</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>invoice</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>invoice_line</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>media_type</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>playlist</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>playlist_track</td>
+      <td>table</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>track</td>
+      <td>table</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to answer which three albuns include in the Store, we can create three queries:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>The <strong>first subquery</strong> join the <em>invoice, invoice_inline and customer</em> tables considering only customers from USA and return the <code>total</code> and <code>track_id</code> columns. </li>
+</ul>
+<ul>
+<li>The <strong>second subquery</strong> join the <em>track</em> table with the <em>genre</em> table considering only the genres HIP-HOP,PUNK,POP and BLUES. it return <code>track_id</code> and <code>genre_name</code> columns. </li>
+</ul>
+<ul>
+<li>The final query join the two queries and apply the <code>SUM()</code> operator in the total_USA column from subquery 1 and group by genre_name.</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#SQ1</span>
+<span class="n">sq1</span> <span class="o">=</span> <span class="s1">'''SELECT</span>
+<span class="s1">            invl.track_id track_id,</span>
+<span class="s1">            inv.total total_USA</span>
+<span class="s1">            FROM customer c</span>
+<span class="s1">            LEFT JOIN invoice inv ON c.customer_id = inv.customer_id</span>
+<span class="s1">            LEFT JOIN invoice_line invl ON invl.invoice_id = inv.invoice_id</span>
+<span class="s1">            WHERE c.country = "USA"</span>
+<span class="s1">'''</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'The first ten rows of subquery 1 are'</span><span class="p">)</span>
+<span class="n">table_q1</span> <span class="o">=</span> <span class="n">run_query</span><span class="p">(</span><span class="n">sq1</span><span class="p">)</span>
+<span class="n">run_query</span><span class="p">(</span><span class="n">sq1</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The first ten rows of subquery 1 are
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>total_USA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1435</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1761</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3377</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1785</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>442</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1951</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2334</td>
+      <td>6.93</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>22</td>
+      <td>3.96</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1488</td>
+      <td>3.96</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1977</td>
+      <td>3.96</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sum_total</span> <span class="o">=</span> <span class="n">table_q1</span><span class="p">[</span><span class="s1">'total_USA'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#SQ2</span>
+<span class="n">sq2</span><span class="o">=</span> <span class="s1">'''    SELECT </span>
+<span class="s1">               t.track_id,</span>
+<span class="s1">               g.name genre_name</span>
+<span class="s1">               FROM genre g</span>
+<span class="s1">               LEFT JOIN track t ON t.genre_id = g.genre_id</span>
+<span class="s1">               WHERE genre_name IN ('Hip Hop/Rap','Alternative &amp; Punk','Pop','Blues')</span>
+
+<span class="s1">'''</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'the first 10 rows of subquery 2 are:'</span><span class="p">)</span>
+<span class="n">run_query</span><span class="p">(</span><span class="n">sq2</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>the first 10 rows of subquery 2 are:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>genre_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>99</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>100</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>101</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>102</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>103</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>104</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>105</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>106</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>107</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>108</td>
+      <td>Alternative &amp; Punk</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<details class="description">
+      <summary class="btn btn-sm" data-open="Hide Code" data-close="Show Code"></summary>
+        <p></p>
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Final results</span>
+<span class="n">q1_sq1</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">        WITH sq1 AS </span>
+<span class="s1">        </span>
+<span class="s1">            (</span>
+<span class="s1">            SELECT</span>
+<span class="s1">            invl.track_id track_id,</span>
+<span class="s1">            inv.total total_USA</span>
+<span class="s1">            FROM customer c</span>
+<span class="s1">            LEFT JOIN invoice inv ON c.customer_id = inv.customer_id</span>
+<span class="s1">            LEFT JOIN invoice_line invl ON invl.invoice_id = inv.invoice_id</span>
+<span class="s1">            WHERE c.country = "USA"</span>
+<span class="s1">                    ),</span>
+<span class="s1">                    </span>
+<span class="s1">            sq2 AS </span>
+<span class="s1">            </span>
+<span class="s1">                (</span>
+<span class="s1">               SELECT </span>
+<span class="s1">               t.track_id,</span>
+<span class="s1">               g.name genre_name</span>
+<span class="s1">               FROM genre g</span>
+<span class="s1">               LEFT JOIN track t ON t.genre_id = g.genre_id</span>
+<span class="s1">               WHERE genre_name IN ('Hip Hop/Rap','Alternative &amp; Punk','Pop','Blues')</span>
+<span class="s1">                )</span>
+<span class="s1">                </span>
+<span class="s1">            SELECT </span>
+<span class="s1">            sq1.track_id,</span>
+<span class="s1">            sq2.genre_name,</span>
+<span class="s1">            SUM(sq1.total_USA) total</span>
+<span class="s1">            FROM sq1</span>
+<span class="s1">            INNER JOIN sq2 ON sq2.track_id = sq1.track_id</span>
+<span class="s1">            GROUP BY genre_name</span>
+<span class="s1">            ORDER BY total DESC</span>
+<span class="s1"> '''</span>
+<span class="n">final_results</span> <span class="o">=</span> <span class="n">run_query</span><span class="p">(</span><span class="n">q1_sq1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'the final query table is:'</span><span class="p">)</span>
+<span class="n">final_results</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+    </details>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>the final query table is:
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>genre_name</th>
+      <th>total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2327</td>
+      <td>Alternative &amp; Punk</td>
+      <td>1234.53</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>896</td>
+      <td>Blues</td>
+      <td>453.42</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3310</td>
+      <td>Hip Hop/Rap</td>
+      <td>366.30</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3255</td>
+      <td>Pop</td>
+      <td>201.96</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It is useful to include a column with the total purchased for each genre in percetage of the total purchased in the USA for all genres. Thus, a new column is introduced by applying the following equation:</p>
+<p>$total(percent) = \frac{total}{sumtotal}$</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_results_perc</span> <span class="o">=</span> <span class="n">final_results</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">final_results_perc</span><span class="p">[</span><span class="s1">'total_%'</span><span class="p">]</span> <span class="o">=</span> <span class="n">final_results_perc</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span><span class="o">/</span><span class="n">sum_total</span><span class="o">*</span><span class="mi">100</span>
+<span class="n">final_results_perc</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'genre_name'</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">final_results_perc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>track_id</th>
+      <th>total</th>
+      <th>total_%</th>
+    </tr>
+    <tr>
+      <th>genre_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Alternative &amp; Punk</th>
+      <td>2327</td>
+      <td>1234.53</td>
+      <td>11.863762</td>
+    </tr>
+    <tr>
+      <th>Blues</th>
+      <td>896</td>
+      <td>453.42</td>
+      <td>4.357340</td>
+    </tr>
+    <tr>
+      <th>Hip Hop/Rap</th>
+      <td>3310</td>
+      <td>366.30</td>
+      <td>3.520122</td>
+    </tr>
+    <tr>
+      <th>Pop</th>
+      <td>3255</td>
+      <td>201.96</td>
+      <td>1.940824</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-Answering-our-question.">
+<a class="anchor" href="#3.-Answering-our-question." aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Answering our question.<a class="anchor-link" href="#3.-Answering-our-question."> </a>
+</h2>
+<ul>
+<li>The question can be answered using the final query table. However, we can say that this result could be part of a report in which the graphical display of information is very desirable. In this way, we can plot a bar chart displaying the results arised from question 1 as following:</li>
+</ul>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">a</span> <span class="o">=</span> <span class="n">final_results_perc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'barh'</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="s1">'total_%'</span><span class="p">,</span>
+                        <span class="n">colormap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Accent</span><span class="p">,</span>
+                        <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+                        <span class="n">legend</span> <span class="o">=</span> <span class="kc">False</span>
+                           <span class="p">)</span>
+<span class="c1">#a.set_title('Which genres include in the Chinook Store?',loc='left',fontdict={'fontsize':14},color='grey')</span>
+<span class="n">a</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'% purchased'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_label_position</span><span class="p">(</span><span class="s1">'top'</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">'right'</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">'bottom'</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">'left'</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'both'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'major'</span><span class="p">,</span><span class="n">bottom</span><span class="o">=</span><span class="s1">'off'</span><span class="p">,</span><span class="n">top</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">,</span><span class="n">left</span><span class="o">=</span><span class="s1">'off'</span><span class="p">,</span><span class="n">right</span><span class="o">=</span><span class="s1">'off'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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%0AtWqaNm1agf189dVXiouLk5OTkyTJMAy5u7vL09NTwcHBmjBhgiRpx44dtm2OHTum+Ph4VatWTW5u%0AboqMjNTKlSvva3wAwKP12IT17V7HeLsr3xEjRmjq1KnatWuXAgMD1bZtW129evWBx9u1a5c6deqk%0Ajh07au/evZo8ebImTpyoWbNm2fWbMWOGatWqpd27d2vs2LFKTEzU8uXL7fosX75c7dq1u+24eXl5%0Amj17tiwWi+rVq2drv3jxolq1aqX169crPT1dHTt21EsvvaTDhw/f8/gAgEerxL0bPCEhQQsWLFC5%0AcuXs2vPz83X16lUdP35cfn5+ysjIUEBAgL7//nvVrVtXGzduVExMjBYuXKjOnTtLki5duiRfX19N%0AmzZNffr0ue14MTEx2rZtm8qWLWvXfuPGDV27dk03btyQJHXv3l05OTlat26drU9SUpI++eQT2330%0AgIAABQcHKyUlxdanX79+OnTokDZt2iRJOnPmjKpXr66TJ0+qSpUqtuNwcXGRxWLRlStX5OzsrHnz%0A5umll14q9Fw1aNBAbdu2VWJiYpHHvxXvBjcH3g0OlHwl8sq6SZMmSk9P1549e2w/CxcuvOt2FotF%0AUVFRtmVXV1eFhYVp//79hW7XuXNnu7H27NmjqVOn2vU5cOCAGjZsaNcWHR2t7OxsXbx40dbWoEED%0Auz4NGjSwG/8f//iHoqKiVKVKFbt+ixYtUlpamv7xj3/oiSee0OrVq+3WX758WSNHjlStWrXk7u6u%0A8uXLa9euXbY/FIo6PgDg0SuRX5Hp4uKigIAAu7aff/75oY1XsWJFBQYG2rVVrVq1yNvfy4Nod5oC%0A9/HxUVBQkIKCgvTZZ5+padOm6tOnj55//nlJ0vDhw7V27VpNmzZNTz31lFxcXNSjRw/l5uYWeWwA%0AgGOUyCvr+2UYhrZv325bvnTpkvbu3avQ0NAH3ndISEiBp7M3b94sX19fubq62tpuHV+Svv32W4WE%0AhNjqWb9+veLj4wsdq3HjxmrSpIkmTpxoa9u6dat69uyp+Ph41a5dW97e3jp69GiBbQsbHwDgGI9V%0AWBflvt748eO1bt067du3T3369JGTk5O6dOnywGMPHz5cGzduVFJSkv79738rOTlZ06dP16hRo+z6%0Abd++XZMnT9aRI0c0Z84cLViwQMOGDZMkpaSkKCgoqMBV/J3GW7VqlW0KOzg4WH//+9+1e/du/fDD%0A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%0AYII=%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Conclusions">
+<a class="anchor" href="#Conclusions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusions<a class="anchor-link" href="#Conclusions"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We framed the problem to be solved and mapped two possible solutions. Then, we pick up one that can give us an answer. However, it left several aspects behind that were briefly discussed.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="viniviena/ds-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/ds-blog/sql/business/2021/01/26/SQL-Skills.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/ds-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/ds-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/ds-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>This is my webpage showing few of my latest and more relevant Data Science projects!</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/vinicius-santana-251a0411b" title="vinicius-santana-251a0411b"><svg class="svg-icon grey"><use xlink:href="/ds-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
