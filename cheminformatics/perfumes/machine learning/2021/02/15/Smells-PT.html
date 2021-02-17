@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Treinando computadores para sentir cheiro: como machine learning e a engenharia de processos em podem ser usadas na indústria de fragrâncias. PARTE 1 | Vinicius Viena</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Treinando computadores para sentir cheiro: como machine learning e a engenharia de processos em podem ser usadas na indústria de fragrâncias. PARTE 1" />
+<meta name="author" content="Vinicius Viena" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cheminformatics" />
+<meta property="og:description" content="Cheminformatics" />
+<link rel="canonical" href="https://viniviena.github.io/ds-blog/cheminformatics/perfumes/machine%20learning/2021/02/15/Smells-PT.html" />
+<meta property="og:url" content="https://viniviena.github.io/ds-blog/cheminformatics/perfumes/machine%20learning/2021/02/15/Smells-PT.html" />
+<meta property="og:site_name" content="Vinicius Viena" />
+<meta property="og:image" content="https://viniviena.github.io/ds-blog/images/robot.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-15T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://viniviena.github.io/ds-blog/cheminformatics/perfumes/machine%20learning/2021/02/15/Smells-PT.html","@type":"BlogPosting","headline":"Treinando computadores para sentir cheiro: como machine learning e a engenharia de processos em podem ser usadas na indústria de fragrâncias. PARTE 1","dateModified":"2021-02-15T00:00:00-06:00","datePublished":"2021-02-15T00:00:00-06:00","image":"https://viniviena.github.io/ds-blog/images/robot.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://viniviena.github.io/ds-blog/cheminformatics/perfumes/machine%20learning/2021/02/15/Smells-PT.html"},"author":{"@type":"Person","name":"Vinicius Viena"},"description":"Cheminformatics","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/ds-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://viniviena.github.io/ds-blog/feed.xml" title="Vinicius Viena" /><link rel="shortcut icon" type="image/x-icon" href="/ds-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/ds-blog/">Vinicius Viena</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+<a class="page-link" href="/ds-blog/about/">About Me</a><a class="page-link" href="/ds-blog/search/">Search</a><a class="page-link" href="/ds-blog/categories/">Tags</a>
+</div>
+      </nav>
+</div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Treinando computadores para sentir cheiro: como machine learning e a engenharia de processos em podem ser usadas na indústria de fragrâncias. PARTE 1</h1>
+<p class="page-description">Cheminformatics</p>
+<p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-15T00:00:00-06:00" itemprop="datePublished">
+        Feb 15, 2021
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Vinicius Viena</span></span>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i> 
+      
+        <a class="category-tags-link" href="/ds-blog/categories/#cheminformatics">cheminformatics</a>
+         
+      
+        <a class="category-tags-link" href="/ds-blog/categories/#perfumes">perfumes</a>
+         
+      
+        <a class="category-tags-link" href="/ds-blog/categories/#machine%20learning">machine learning</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/viniviena/ds-blog/tree/master/_notebooks/2021-02-15-Smells%20-%20PT.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/ds-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/viniviena/ds-blog/master?filepath=_notebooks%2F2021-02-15-Smells+-+PT.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ds-blog/assets/badges/binder.svg" alt="Open In Binder">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/viniviena/ds-blog/blob/master/_notebooks/2021-02-15-Smells%20-%20PT.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/ds-blog/assets/badges/colab.svg" alt="Open In Colab">
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#1)--Perpectiva-hist%C3%B3rica.">1)  Perpectiva histórica. </a></li>
+<li class="toc-entry toc-h2"><a href="#2)-A-qu%C3%ADmica-e-a-biologia-dos-cheiros.">2) A química e a biologia dos cheiros. </a></li>
+<li class="toc-entry toc-h2"><a href="#3)-Cheminform%C3%A1tica-para-fragr%C3%A2ncias.">3) Cheminformática para fragrâncias. </a></li>
+<li class="toc-entry toc-h2"><a href="#4)-Conclus%C3%B5es.">4) Conclusões. </a></li>
+</ul>
+<!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-02-15-Smells - PT.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1)--Perpectiva-histórica.">
+<a class="anchor" href="#1)--Perpectiva-hist%C3%B3rica." aria-hidden="true"><span class="octicon octicon-link"></span></a>1)  Perpectiva histórica.<a class="anchor-link" href="#1)--Perpectiva-hist%C3%B3rica."> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Nosso sistema olfativo tem uma capacidade notável de distinguir <a href="https://science.sciencemag.org/content/343/6177/1370">cerca de 1 trilhão de odores</a> <img class="emoji" title=":open_mouth:" alt=":open_mouth:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png" height="20" width="20">! Normalmente não somos gratos por isso, mas a mãe natureza nos deu um enorme dom. É um produto de centenas de milhares de anos de evolução que nos ajudou a sobreviver em tempos menos prósperos. Isso nos ajudou a encontrar boa comida, e evitar situações perigosas.</p>
+<p>No entanto, os humanos modernos não precisam confiar em seus narizes para fins de nutrição. Quando vamos a um mercado, não precisamos cheirar ou provar a comida para coletar informações sobre ela. Todas as informações que precisamos estão na embalagem plástica que envolve os alimentos: calorias, gordura, açúcar, data de validade.</p>
+<p><strong>Então, qual é o papel do nosso nariz para o humano moderno? É só para colocarmos os óculos? Ou pendurar piercings? Ou para reclamarmos de sua forma irregular ao tirar selfies?</strong>
+Você pode argumentar que você poderia facilmente sobreviver sem o nariz e nossos sentidos restantes são muito mais importantes (visão, audição, degustação), e eu não posso discordar.</p>
+<p>Parece que não precisamos do nosso nariz para sobreviver hoje em dia, mas bons cheiros podem ter uma enorme influência em nosso comportamento e as empresas tiram <strong>real</strong> vantagem  disso ao tentar vender-lhe coisas. Considere um produto simples que é uma parte essencial da nossa vida diária (agora ainda mais durante pandemias de covid): <strong>uma barra de sabão</strong>. Há centenas de marcas de sabão em um mercado. Todos fazem o trabalho de limpeza muito bem. Você pode ter testado um monte deles e eu tenho certeza que você terminou de lavar as mãos e não reclamou sobre a capacidade de sabão para remover sujeira. Então, o que guia sua decisão ao comprar uma barra de sabão e outros produtos de cuidado pessoal?</p>
+<p>Não consigo evitar compartilhar minha experiência: sempre sinto o cheiro do sabão antes de comprá-lo e sempre escolho aquele com o cheiro mais agradável. É um dos únicos produtos do mercado que você pode experimentar antes de comprar e muitas pessoas aproveitam isso. O mesmo é válido para shampoos, desodorantes, cosméticos e assim por diante.</p>
+<p>Os produtos que mencionei fazem parte do que as pessoas chamam de produtos funcionais perfumados. Eles servem a um determinado propósito (limpeza para sabonetes), mas contêm fragrâncias para melhorar a aceitação do cliente ou mascarar odores desagradáveis. Há também outra classe de produtos perfumados: Perfumes!</p>
+<p>Ao contrário dos shampoos, os perfumes não têm outro propósito a não ser o de ser percebido. A palavra perfume vem da frase em latim, "per" que significa "através" e "fumus" que significa "fumaça". Os franceses mais tarde deram o nome "parfum" aos cheiros produzidos pela queima de incenso. Alguns perfumes são feitos para serem lançados no ar e dão a um espaço confinado uma certa "personalidade" olfativa. Da mesma forma, perfumes também são usados por humanos para darem a si mesmos personalidade olfativa - <strong>com fragrâncias!</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Eu já vi fragrâncias muito caras em um shopping e sempre me perguntei como as pessoas podem pagar tanto só para ter essa mistura de moléculas sendo liberadas de sua pele? O fato é que as pessoas valorizam bons cheiros e estão dispostas a pagar até centenas de dólares por uma garrafa de perfume que fez do sabor e da fragrância um negócio <a href="https://blog.technavio.com/blog/top-10-flavors-and-fragrances-companies-world">multibilionário</a>!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2)-A-química-e-a-biologia-dos-cheiros.">
+<a class="anchor" href="#2)-A-qu%C3%ADmica-e-a-biologia-dos-cheiros." aria-hidden="true"><span class="octicon octicon-link"></span></a>2) A química e a biologia dos cheiros.<a class="anchor-link" href="#2)-A-qu%C3%ADmica-e-a-biologia-dos-cheiros."> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Eu venho trabalhando com todas essas coisas no último ano com um grupo de pesquisa muito prestigiado numa área chamada <strong>Engenharia de Perfumes</strong>. <a href="https://lsre-lcm.fe.up.pt/areas/11">O Laboratório de Separações e Reações Químicas</a> é pioneiro na investigação e desenvolvimento científico no fábrico de perfumes usando engenharia quimica. Com esse trabalho de um ano esclarei muitas questões mas algumas ainda ficaram na minha mente: <strong>o que faz uma molécula cheirar mal ou bem ou ser inodora em vez disso?</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A primeira coisa que devemos considerar é como o cheiro acontece em nosso corpo. Aqui vou dar uma explicação muito simplificada sobre isso. Quero dizer simples porque uma cientista (Linda Buck)  <a href="https://www.nobelprize.org/womenwhochangedscience/stories/linda-buck">Recebeu o prêmio Nobel em 2014</a> por sua contribuição no entendimento do nosso sistema olfativo.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>O olfato é construído pela cooperação entre nosso nariz e nosso cérebro. Quando um componente químico está presente no ar e nós o cheiramos, o produto químico viaja através de nossas narinas e alcança nossas células receptoras olfativas no epitélio nasal. Se alguma das células receptoras for "receptiva" a esse produto químico e estiver presente em uma quantidade detectável, enviará um sinal elétrico para nosso cérebro através de nossos neurônios. Esse sinal é então processado pelo nosso cérebro criando a experiência consciente do olfato. Aqui está uma foto que tirei da web para resumir.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/ds-blog/images/copied_from_nb/my_icons/sniff.jpg" alt="">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Agora temos uma compreensão geral de como cheiramos. Podemos verificar que nosso nariz é responsável apenas pela coleta de moléculas no ar, <strong>mas a experiência real de olfato acontece em nosso cérebro.</strong></p>
+<p>É um achado de muito interesse a partir de uma perspectiva biológica, mas há também a perspectiva <strong>química</strong>, ou seja, <strong>a estrutura química de uma molécula dá indícios de suas propriedades de odor?</strong></p>
+<p>Vamos considerar as duas moléculas simples: água e etanol. A água é um produto químico inodoro (pelo menos para mim) enquanto o etanol tem um cheiro muito desagradável (pelo menos para a maioria das pessoas que conheço) mesmo em pequenas concentrações. As pistas de por que a água é inodora e o etanol não está escondido em sua estrutura química.</p>
+<p>Vamos dar uma olhada. Abaixo está uma representação molecular da água e etanol</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Water<br>
+<figure>
+  
+    <img class="docimage" src="/ds-blog/images/copied_from_nb/my_icons/water.jpg" alt="">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ethanol
+<figure>
+  
+    <img class="docimage" src="/ds-blog/images/copied_from_nb/my_icons/ethanol.jpg" alt="">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Eu circulei a parte das moléculas que são diferentes. Como você vê, etanol é água com o hidrogênio substituído por -CH2CH3! Etanol é <strong>CH2CH3</strong>-OH e água é <strong>H</strong>-OH. Essa pequena mudança na estrutura é suficiente para fazer com que o etanol tenha um cheiro desagradável.</p>
+<p><strong>Olhando para este exemplo, podemos pensar que poderíamos derivar regras simples como: adicionar um CH2CH3 fazer uma molécula ter um cheiro desagradável. Esta é uma grande estratégia e é exatamente o que o campo da cheminformática tenta - desvendar as regras que regem a relação entre a estrutura molecular e suas propriedades (propriedades do odor em nosso caso)</strong></p>
+<p>No entanto, as pessoas que pesquisam isso não o fazem olhando para algumas moléculas e seus descritores. Eles reúnem um enorme banco de dados de moléculas e suas propriedades e configuram algoritmos de computador para descobrir as regras – Essa é uma das maneiras pelas quais o <strong>Machine Learning</strong> pode ser usado para a construção de fragrâncias!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3)-Cheminformática-para-fragrâncias.">
+<a class="anchor" href="#3)-Cheminform%C3%A1tica-para-fragr%C3%A2ncias." aria-hidden="true"><span class="octicon octicon-link"></span></a>3) Cheminformática para fragrâncias.<a class="anchor-link" href="#3)-Cheminform%C3%A1tica-para-fragr%C3%A2ncias."> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Agora vou restringir a parte restante deste post para discutir a relação da estrutura molecular com suas "propriedades de odor", especialmente para o caso de produtos químicos usados para formular perfumes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Perfumes são uma mistura líquida de componentes químicos projetados para causar uma impressão olfativa desejada quando liberada no ar. Assim, o primeiro passo para criar um perfume é selecionar produtos químicos que "tenham" uma característica de odor. Perfumistas (pessoas que fazem perfumes) usam descritores semânticos para classificar ingredientes de perfume. "Descritores semânticos" são apenas uma maneira extravagante de dizer "palavras". Então, perfumistas usam palavras para classificar ingredientes de perfume. Deixe-me dar-lhe um exemplo que eu tirei <a href="http://www.thegoodscentscompany.com/">deste website</a> que contém uma lista de centenas de ingredientes de perfume.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/ds-blog/images/copied_from_nb/my_icons/odorants.png" alt="">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Como podemos ver, os perfumistas usam palavras como "Verde", "frutado", "Etéreo", "Vinho", "Woody" e "Floral" para descrever ingredientes da fragrância. Pode ser muito desafiador identificar regras apenas olhando para elas e descobrir que parte da estrutura molecular faz com que ela seja descrita como "Frutada", por exemplo.</p>
+<p>Felizmente, existem bancos de dados de acesso livre contendo milhares dessas moléculas e seus descritores de odor. Um dos passos fundamentais nesta jornada é descobrir como representar moléculas com números úteis. Fazendo isso, podemos comparar como "semelhantes" são duas moléculas. Vou ilustrar isso.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Suponha que descobrimos uma maneira de representar uma molécula com dois números. A tabela abaixo mostra alguns números que criei para ilustrar o conceito. Há 3 moléculas hipotéticas, suas representações numéricas e seus descritores de odor.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Molecule id</th>
+<th style="text-align:center">Dimension 1</th>
+<th style="text-align:center">Dimension 2</th>
+<th style="text-align:center">Odor descriptor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Fruity</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3.5</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">Fruity</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">-2</td>
+<td style="text-align:center">Woody</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Se traçarmos cada molécula como vetores em um gráfico e colori-las de acordo com seu descritor, obteríamos algo como você ver abaixo. Você pode observar que os vetores de moléculas com odor "frutado" são muito mais próximas umas das outras do que são da molécula 3 (odor woody). A palavra "mais perto" aqui tem um significado matemático, então podemos realmente calcular a distância entre dois desses vetores com teorema de Pitágoras!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/ds-blog/images/copied_from_nb/my_icons/vector.png" alt="">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>O objetivo da tabela e do gráfico é ilustrar o seguinte conceito: <strong>para os números que descrevem as moléculas serem úteis, eles devem fazer moléculas com os mesmos descritores estarem próximos um do outro e longe dos demais!</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4)-Conclusões.">
+<a class="anchor" href="#4)-Conclus%C3%B5es." aria-hidden="true"><span class="octicon octicon-link"></span></a>4) Conclusões.<a class="anchor-link" href="#4)-Conclus%C3%B5es."> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Neste post, dei uma introdução de como o aprendizado de máquina pode ser usado para encontrar relações úteis entre a estrutura molecular e seus descritores de odor.</p>
+<p>Na PARTE 2 desta série de posts, mostrarei fluxo de trabalho prático de ciência de dados para a construção de um algoritmo totalmente funcional que pode prever descritores de fragrâncias usando sua estrutura molecular.</p>
+<p>Na PARTE 3 vou mostrar como a engenharia química pode ser usada para escolher a composição dos ingredientes da fragrância uma vez que já os escolhemos.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div>
+<!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js" repo="viniviena/ds-blog" issue-term="title" label="blogpost-comment" theme="github-light" crossorigin="anonymous" async>
+</script><a class="u-url" href="/ds-blog/cheminformatics/perfumes/machine%20learning/2021/02/15/Smells-PT.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/ds-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/ds-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/ds-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>This is my webpage showing few of my latest and more relevant Data Science projects!</p>
+      </div>
+    </div>
+
+    <div class="social-links">
+<ul class="social-media-list"><li><a rel="me" href="https://www.linkedin.com/in/vinicius-santana-251a0411b" title="vinicius-santana-251a0411b"><svg class="svg-icon grey"><use xlink:href="/ds-blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
